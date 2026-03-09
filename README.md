@@ -1,30 +1,30 @@
-# Homeopathy AI Decision Support System — MVP
+# Homeopathy Case Management System
 
-**Modern, Evidence-Backed Homeopathic Case Management & Remedy Selection Platform**
+**Professional Case Tracking and Remedy Reference Platform for Practitioners**
 
-> This is an MVP (Minimum Viable Product) for an AI-augmented classical homeopathy decision support system. It combines structured case-taking, intelligent symptom analysis, and side-by-side remedy differentiation to support evidence-based prescribing.
-
----
-
-## 🎯 What This Is
-
-A **single unified workspace** for homeopathic practitioners that:
-
-- 📋 Captures structured case data (mental, general, particular, causation)
-- 🔍 Maps symptoms to repertory rubrics automatically
-- 💊 Suggests matched remedies with differentiation analysis
-- ✅ Logs remedy decisions with full audit trail
-- 📈 Tracks follow-up outcomes for continuous learning
-
-**Not** an auto-prescriber. **Fully** maintains practitioner authority and judgment at every step.
+This is a case management system for classical homeopathy practitioners. It provides structured case capture, symptom-to-rubric mapping, remedy reference tools, and complete audit trails for evidence-based practice.
 
 ---
 
-## 🚀 Quick Start
+## Overview
 
-### Local Development (Recommended)
+This system provides practitioners with tools for:
 
-**Terminal 1 - Backend:**
+- Structured case data entry (mental, general, particular symptoms, causation)
+- Symptom mapping to repertory rubrics
+- Remedy reference comparison
+- Decision and outcome logging
+- Complete case history and audit trails
+
+The system maintains full practitioner control and judgment at every stage. All remedial decisions remain the responsibility of the practitioner.
+
+---
+
+## Getting Started
+
+### Development Setup (Recommended)
+
+**Backend Setup (Terminal 1):**
 ```bash
 cd backend
 python -m venv venv
@@ -36,60 +36,53 @@ python scripts/init_db.py
 uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-**Terminal 2 - Frontend:**
+**Frontend Setup (Terminal 2):**
 ```bash
 cd frontend
 npm install
 npm run dev  # Runs on http://localhost:3000
 ```
 
-Access the app at **http://localhost:3000**
+Access the application at **http://localhost:3000**
 
-### Windows Users: Batch File Shortcut
+### Windows Quick Start
 
-If you're on Windows, you can use batch files for easier setup:
+On Windows, you can use batch files for faster setup:
 
 ```bash
 # One-time setup
 backend\setup-env.bat
 
-# Then run backend & frontend
+# Then run backend and frontend
 backend\run-backend.bat      # Terminal 1
 frontend\run-frontend.bat    # Terminal 2
 ```
 
-See **[WINDOWS_SETUP.md](WINDOWS_SETUP.md)** for details.
+For detailed setup instructions, see [Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md).
 
 ---
 
-See **[Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md)** for detailed setup instructions.
-
----
-
-## 📚 Documentation
+## Documentation
 
 | Document | Purpose |
 |----------|---------|
-| [**WINDOWS_SETUP.md**](WINDOWS_SETUP.md) | Windows batch file quick setup |
-| [**Docs/LOCAL_SETUP.md**](Docs/LOCAL_SETUP.md) | Local development setup guide |
-| [**Docs/QUICKSTART.md**](Docs/QUICKSTART.md) | Get running quickly |
-| [**PROGRESS.md**](PROGRESS.md) | Current implementation status & gaps |
-| [**SESSION_UPDATE.md**](SESSION_UPDATE.md) | What changed in this session |
-| [**Docs/mvp.md**](Docs/mvp.md) | MVP spec & design philosophy |
-| [**Docs/project.md**](Docs/project.md) | Detailed architecture overview |
-| [**backend/README.md**](backend/README.md) | Backend setup instructions |
-| [**frontend/README.md**](frontend/README.md) | Frontend setup instructions |
+| [Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md) | Detailed setup and troubleshooting |
+| [PROGRESS.md](PROGRESS.md) | Project status and implementation details |
+| [Docs/mvp.md](Docs/mvp.md) | Design philosophy and specifications |
+| [Docs/project.md](Docs/project.md) | Architecture and system overview |
+| [backend/README.md](backend/README.md) | Backend documentation |
+| [frontend/README.md](frontend/README.md) | Frontend documentation |
 
 ---
 
-## 🏗️ Architecture
+## System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    React Frontend (Vite)                    │
-│  Dashboard | Search | Case-Taking | Decision Matrix   │
+│  Dashboard | Search | Case-Taking | Remedy Matrix       │
 └──────────────────────────────┬──────────────────────────────┘
-                               │ /api/*
+                               │ REST API
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
 │              FastAPI Backend (Python 3.13)                  │
@@ -98,292 +91,271 @@ See **[Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md)** for detailed setup instructio
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│   SQLite (dev) / PostgreSQL (prod)                          │
+│   SQLite (Development) / PostgreSQL (Production)            │
 │   Users | Cases | Decisions | FollowUps | AuditTrail        │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Tech Stack:**
-- **Frontend:** React 18 + Vite + Tailwind CSS + Zustand
-- **Backend:** FastAPI + SQLAlchemy + Alembic
-- **Database:** SQLite (local), PostgreSQL (production ready)
-- **Testing:** pytest (backend), Playwright (E2E coming)
+**Technology Stack:**
+- Frontend: React 18, Vite, Tailwind CSS, Zustand
+- Backend: FastAPI, SQLAlchemy, Alembic
+- Database: SQLite (development), PostgreSQL (production)
+- Testing: pytest (backend), Playwright (end-to-end)
 
 ---
 
-## ✨ Key Features
-
-### 1. Structured Case Capture
-- Patient demographics (name, age, gender)
-- Chief complaint
-- Organized symptoms (mental, general, particular, causation)
-- Case notes and observations
-
-### 2. Intelligent Symptom → Rubric Mapping
-- Text-based fuzzy and semantic matching maps symptoms to rubrics
-- Automatic rubric suggestions with confidence scores
-
-### 3. Remedy Differentiation Matrix
-- Side-by-side comparison of top 5 remedies
-- Shows **supporting symptoms** (green) - where remedy is strong
-- Shows **missing/weak symptoms** (yellow) - gaps in coverage
-- Shows **contradictions** (red) - where remedy doesn't fit
-- Expandable details for deep analysis
-
-### 4. Decision Logging
-- Manual remedy selection (not automated)
-- Potency and dose recording
-- Detailed reasoning capture (required field)
-- Decision tracking with timestamp and audit trail
-
-### 5. Follow-up Tracking
-- Post-dose observations (aggravation, amelioration, new symptoms)
-- Timeline tracking (days since dose)
-- Practitioner notes
-- Outcome patterns for learning
-
-### 6. Audit Trail
-- Complete case history with all changes
-- Decision documentation
-- Rejection reasoning (why other remedies weren't chosen)
-- Full traceability for learning and review
-
----
-
-## 📊 Data Models
-
-### User (Practitioner)
-```
-id, email, full_name, license_number, created_at
-```
-
-### Case
-```
-id, practitioner_id, patient_name, patient_age, patient_gender,
-chief_complaint, case_notes, symptoms (JSON), mode, rag_analysis,
-created_at, updated_at
-```
-
-### Decision
-```
-id, case_id, remedy_name, potency, dose, reasoning,
-rejected_remedies, supporting_rubrics, confidence, created_at
-```
-
-### FollowUp
-```
-id, case_id, decision_id, days_since_dose, reaction,
-observations, new_symptoms, notes, created_at
-```
-
----
-
-## 🔌 API Endpoints
-
-### Health & Status
-- `GET /health/` — API health check
-- `GET /` — Root status
-
-### Repertory Search
-- `GET /search/sections` — List all sections
-- `GET /search/search?q=...&source=boger|kent` — Full-text search
-- `GET /search/stats` — Repertory statistics
-
-> **Note:** RAG endpoints were part of earlier prototypes but have been removed from the API. Symptom mapping now uses a text-based search service.
-
+## Features
 
 ### Case Management
-- `POST /api/cases?practitioner_id=<id>` — Create case
-- `GET /api/cases/<case_id>` — Retrieve case
-- `PUT /api/cases/<case_id>` — Update case
-- `GET /api/users/<id>/cases` — List user's cases
+- Captures structured patient and case data
+- Organizes symptoms by category (mental, general, particular, causation)
+- Maintains comprehensive case notes
 
-### Decisions
-- `POST /api/cases/<case_id>/decisions` — Log decision
-- `GET /api/cases/<case_id>/decisions` — Get case decisions
+### Symptom-to-Rubric Mapping
+- Text-based search maps symptoms to repertory rubrics
+- Returns rubric matches with confidence scoring
+- Supports fuzzy and semantic matching
 
-### Follow-ups
-- `POST /api/cases/<case_id>/follow-ups` — Log follow-up
-- `GET /api/cases/<case_id>/follow-ups` — Get follow-ups
+### Remedy Reference
+- Side-by-side remedy comparison
+- Displays supporting symptoms (where remedy matches)
+- Shows weak coverage (where remedy gaps exist)
+- Identifies symptom contradictions
+- Expandable details for deeper analysis
+
+### Decision Logging
+- Manual remedy selection and dose recording
+- Practitioner reasoning capture
+- Complete decision audit trail
+- Option to record rejected remedies and reasoning
+
+### Follow-up Tracking
+- Records post-dose observations (aggravation, amelioration, new symptoms)
+- Timeline tracking relative to dose date
+- Practitioner observations and notes
+- Outcome pattern documentation
 
 ### Audit Trail
-- `GET /api/cases/<case_id>/audit-trail` — Get full case history
-
-**Full API Docs:** http://127.0.0.1:8000/docs (when running locally)
+- Complete case history with all changes
+- Full traceability of decisions and modifications
+- Decision documentation and reasoning
+- Practitioner-complete notes on remedy selection
 
 ---
 
-## 📈 Project Status
+## Data Models
 
-### ✅ Completed
-- Core FastAPI backend with all CRUD endpoints
-- React/Vite frontend with 5 main pages
-- SQLAlchemy ORM with migrations
-- Repertory search (Boger + Kent)
-- Symptom-to-rubric mapping (text-based)
-- Case intake & decision logging
+### User
+- Practitioner account information and credentials
+
+### Case
+- Patient demographics and case presentation
+- Chief complaint and case notes  
+- Symptom data (JSON structure)
+- Case metadata and timestamps
+
+### Decision
+- Remedy selection and dosage
+- Practitioner reasoning and justification
+- Supporting rubrics and remedies considered
+- Decision timestamp and confidence level
+
+### FollowUp
+- Post-dose observations and timeline
+- Patient reaction and new symptoms
+- Practitioner notes and observations
+
+### AuditTrail
+- Complete history of all case changes
+- User and timestamp for each modification
+
+---
+
+## API Endpoints
+
+### Status and Health
+```
+GET /           — API status
+GET /health/    — Service health check
+```
+
+### Search
+```
+GET /search/sections              — List repertory sections
+GET /search/search?q=...&source=  — Keyword search
+GET /search/stats                 — Repertory statistics
+```
+
+### Cases
+```
+POST   /api/cases                — Create case
+GET    /api/cases/<case_id>      — Retrieve case
+PUT    /api/cases/<case_id>      — Update case
+GET    /api/users/<id>/cases     — List practitioner's cases
+```
+
+### Decisions
+```
+POST   /api/cases/<case_id>/decisions       — Log decision
+GET    /api/cases/<case_id>/decisions       — Retrieve decisions
+```
+
+### Follow-ups
+```
+POST   /api/cases/<case_id>/follow-ups      — Log follow-up
+GET    /api/cases/<case_id>/follow-ups      — Retrieve follow-ups
+```
+
+### Audit
+```
+GET    /api/cases/<case_id>/audit-trail     — Case history
+```
+
+Complete API documentation is available at `http://127.0.0.1:8000/docs` when running locally.
+
+---
+
+## Project Status
+
+### Completed
+- FastAPI backend with full CRUD endpoints
+- React/Vite frontend with main application pages
+- SQLAlchemy ORM with database migrations
+- Repertory search (Boger and Kent)
+- Symptom-to-rubric mapping
+- Case intake and decision logging
 - Follow-up tracking
-- Audit trail framework
-- Local development setup
-- Frontend validation layer
-- Remedy differentiation matrix UI
-- 18 passing pytest tests
+- Audit trail generation
+- Local development environment setup
+- Frontend form validation
+- Remedy reference matrix interface
+- 18 passing unit tests
 
-### ⚠️ In Progress
-- E2E test coverage (Playwright)
+### In Progress
+- End-to-end test coverage
 - Production deployment documentation
-- Enhanced backend differentiation analysis
 
-### 🔮 Planned (Phase 2)
-- Embeddings integration (semantic similarity)
-- Voice input for rapid case capture
-- Real contraindication checking
-- Multi-user collaboration features
-- PDF repertory import
+### Planned
+- Semantic similarity search
+- Voice input for case capture
+- Contraindication checking
+- Multi-user features
 - Advanced follow-up analytics
-- Mobile app
-- Cloud deployment templates
 
 ---
 
-## 🧪 Testing
+## Testing
 
-### Run Backend Tests
+### Backend Tests
 ```bash
 cd backend
 pytest tests/ -v
 ```
 
-**Current Test Count:** 18 passing  
-**Coverage Areas:** Search, Cases, Decisions, Follow-ups
+Test coverage includes:
+- Repertory search functionality
+- Case management CRUD operations
+- Decision logging and retrieval
+- Follow-up tracking
+- Integration tests
 
-### E2E Tests (Coming Soon)
-Playwright test suite will cover:
-- User registration → Case creation → Decision → Follow-up
-- Search functionality end-to-end
-- RAG analysis pipeline
-- Error handling
+Current: 18 passing tests
+
+### End-to-End Tests
+
+Playwright tests (in development) will cover:
+- User registration and authentication
+- Complete case workflow (creation through follow-up)
+- Search functionality
+- Error handling and validation
 
 ---
 
-## 📦 Building for Production
+## Production Deployment
 
-### Backend Production Build
+### Backend
 ```bash
 cd backend
-# Install production dependencies
 pip install -r requirements.txt
-# Run with production server (e.g., Gunicorn)
 gunicorn app.main:app -w 4 --bind 0.0.0.0:8000
 ```
 
-### Frontend Production Build
+### Frontend
 ```bash
 cd frontend
 npm run build
-# Output in frontend/dist/
+# Output is in frontend/dist/
 ```
 
-See **[Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md)** for development troubleshooting.
+For detailed deployment instructions, see [Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md).
 
 ---
 
-## 🔒 Security
+## Security
 
-- ✅ Input validation on all fields
-- ✅ Error handling without stack trace exposure
-- ✅ Environment variables for secrets
-- ✅ Type checking prevents injection attacks
-- ✅ SQLAlchemy ORM prevents SQL injection
-- ⚠️ HTTPS/SSL ready (configure with Nginx)
-- ⚠️ HIPAA-ready database structure
+- Input validation on all endpoints
+- Controlled error responses (no stack trace exposure)
+- Type checking to prevent injection attacks
+- SQLAlchemy ORM prevents SQL injection
+- Environment variables for sensitive configuration
+- HTTPS/SSL compatible (configure via web server)
+- Database structure supports HIPAA requirements
 
----
+## Limitations
 
-## 📋 Known Limitations (MVP)
-
-- Text-based symptom matching (no semantic embeddings yet)
-- No multi-user real-time collaboration
+- Text-based symptom matching (semantic search planned)
+- Single-instance deployment (horizontal scaling with load balancer)
 - No offline mode
-- PDFs not auto-imported (JSON repertories only)
-- No mobile app (responsive web only)
-- Single-instance architecture (scales horizontally with load balancer)
+- No automatic PDF import (JSON format required)
+- Web-only interface (responsive design for tablets)
 
 See **[PROGRESS.md](PROGRESS.md)** for detailed issues and roadmap.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-### Code Style
-- Python: Black formatter, type hints preferred
-- JavaScript: ESLint + Prettier (configured in repo)
-- Commits: Atomic and descriptive
+### Code Standards
+- Python: Black formatter with type hints
+- JavaScript: ESLint and Prettier (configured)
+- Commits should be atomic with descriptive messages
 
-### Adding a Feature
-1. Create feature branch
-2. Update tests
-3. Document in code
-4. Update PROGRESS.md with changes
+### Adding Features
+1. Create a feature branch
+2. Write tests for new functionality
+3. Add documentation and code comments
+4. Update PROGRESS.md
 5. Submit PR with detailed description
 
-### Reporting Bugs
-- Use GitHub Issues
-- Include: steps to reproduce, expected behavior, actual behavior
+### Reporting Issues
+- Use GitHub Issues for bug reports
+- Include steps to reproduce and expected vs. actual behavior
 - Attach logs if available
 
----
+## Support
 
-## 📞 Support
-
-- **Technical Issues:** See [PROGRESS.md](PROGRESS.md) troubleshooting section or [Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md)
-- **Feature Requests:** Open an issue with `[FEATURE]` tag
-- **Bugs:** Open an issue with `[BUG]` tag
-
----
-
-## 📜 License
-
-[Add your license here - e.g., MIT, GPL v3, etc.]
+For issues or questions:
+- **Setup Help:** See [Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md)
+- **Status & Roadmap:** See [PROGRESS.md](PROGRESS.md)
+- **Technical Details:** See [Docs/project.md](Docs/project.md)
 
 ---
 
-## 🎓 Learning Resources
+## License
 
-### For Understanding Homeopathy Integration
-- See `Docs/mvp.md` — Philosophy and design principles
-- See `Docs/Plan.md` — Technical implementation strategy
-- See `Docs/stack.md` — Technology choices and rationale
+[Add your license here]
 
-### For Understanding the Code
-- `backend/app/db/models.py` — Database schema explained
-- `backend/app/api/rag.py` — Symptom → Remedy mapping logic
-- `frontend/src/components/RemedyDifferentiationMatrix.jsx` — UI patterns
-- `frontend/src/api/validation.js` — Form validation strategy
+## Documentation Resources
 
----
-
-## 🚀 Next Steps
-
-1. **Try It Out:** Follow [QUICKSTART.md](QUICKSTART.md)
-2. **Explore Code:** Check out key files mentioned above
-3. **Read Status:** Review [PROGRESS.md](PROGRESS.md) for current state
-4. **Contribute:** Pick an open issue or suggest improvements
+For deeper understanding of the system:
+- [Docs/mvp.md](Docs/mvp.md) — Design philosophy and specifications
+- [Docs/project.md](Docs/project.md) — System architecture and implementation
+- [backend/app/db/models.py](backend/app/db/models.py) — Database schema
+- [backend/app/api/](backend/app/api/) — API endpoint implementations
+- [frontend/src/components/](frontend/src/components/) — UI components
 
 ---
 
-## 📞 Contact
-
-**Project Lead:** [Your Name/Team]  
-**Email:** [contact email]  
-**Repository:** [GitHub URL]
-
----
-
-**Version:** 0.1.0 (MVP Alpha)  
-**Last Updated:** February 10, 2026  
+**Current Version:** 0.1.0  
+**Last Updated:** March 10, 2026  
 **Status:** Active Development
-
----
-
-**Build with care, prescribe with wisdom.** ⚕️
