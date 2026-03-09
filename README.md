@@ -58,21 +58,6 @@ backend\run-backend.bat      # Terminal 1
 frontend\run-frontend.bat    # Terminal 2
 ```
 
-For detailed setup instructions, see [Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md).
-
----
-
-## Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md) | Detailed setup and troubleshooting |
-| [PROGRESS.md](PROGRESS.md) | Project status and implementation details |
-| [Docs/mvp.md](Docs/mvp.md) | Design philosophy and specifications |
-| [Docs/project.md](Docs/project.md) | Architecture and system overview |
-| [backend/README.md](backend/README.md) | Backend documentation |
-| [frontend/README.md](frontend/README.md) | Frontend documentation |
-
 ---
 
 ## System Architecture
@@ -286,9 +271,6 @@ cd frontend
 npm run build
 # Output is in frontend/dist/
 ```
-
-For detailed deployment instructions, see [Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md).
-
 ---
 
 ## Security
@@ -308,9 +290,6 @@ For detailed deployment instructions, see [Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP
 - No offline mode
 - No automatic PDF import (JSON format required)
 - Web-only interface (responsive design for tablets)
-
-See **[PROGRESS.md](PROGRESS.md)** for detailed issues and roadmap.
-
 ---
 
 ## Contributing
@@ -331,28 +310,6 @@ See **[PROGRESS.md](PROGRESS.md)** for detailed issues and roadmap.
 - Use GitHub Issues for bug reports
 - Include steps to reproduce and expected vs. actual behavior
 - Attach logs if available
-
-## Support
-
-For issues or questions:
-- **Setup Help:** See [Docs/LOCAL_SETUP.md](Docs/LOCAL_SETUP.md)
-- **Status & Roadmap:** See [PROGRESS.md](PROGRESS.md)
-- **Technical Details:** See [Docs/project.md](Docs/project.md)
-
----
-
-## License
-
-[Add your license here]
-
-## Documentation Resources
-
-For deeper understanding of the system:
-- [Docs/mvp.md](Docs/mvp.md) — Design philosophy and specifications
-- [Docs/project.md](Docs/project.md) — System architecture and implementation
-- [backend/app/db/models.py](backend/app/db/models.py) — Database schema
-- [backend/app/api/](backend/app/api/) — API endpoint implementations
-- [frontend/src/components/](frontend/src/components/) — UI components
 
 ---
 
