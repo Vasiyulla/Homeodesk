@@ -18,7 +18,7 @@ A FastAPI-based backend for homeopathic case-taking and remedy decision support.
 
 ### Prerequisites
 - Python 3.13+
-- SQLite (included with Python)
+- PostgreSQL 15+
 
 ### Setup & Run
 ```bash
@@ -107,7 +107,7 @@ uvicorn app.main:app --reload --port 8000
 - **Total:** 323,870 clean, deduplicated entries
 - **Unique Remedies:** 500+
 - **Unique Chapters:** 72
-- **Database:** SQLite (~80 MB)
+- **Database:** PostgreSQL
 
 ## Project Structure
 

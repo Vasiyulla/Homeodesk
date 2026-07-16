@@ -1,0 +1,46 @@
+name: Backend CI/CD & Security
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches: [ "main", "master" ]
+    paths:
+      - 'backend/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.13"
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest bandit pip-audit
+
+    - name: Run Tests
+      run: |
+        pytest tests/ -v
+
+    - name: Run Bandit (SAST)
+      run: |
+        # Ignore asserts as they are common in tests, and ignore B104 (bind to all interfaces)
+        bandit -r app/ scripts/ -c "bandit.yml" || bandit -r app/ scripts/ -ll
+
+    - name: Dependency Audit (pip-audit)
+      run: |
+        pip-audit

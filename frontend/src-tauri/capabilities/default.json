@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nickelpack/nbl/main/schemas/capabilities.json",
+  "identifier": "default",
+  "description": "Default permissions for the Homeopathy Case Manager",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-open"
+  ]
+}

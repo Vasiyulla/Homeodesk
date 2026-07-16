@@ -1,22 +1,28 @@
 """
-Alembic configuration.
+Alembic environment configuration — PostgreSQL only.
+
+Uses settings.DATABASE_URL as the single source of truth
+for the database connection string.
 """
 from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from alembic import context
-import os
 import sys
 from pathlib import Path
 
 # Add backend to path
-backend_path = Path(__file__).resolve().parents[2]
+backend_path = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(backend_path))
 
+from app.core.config import settings
 from app.db.database import Base
-from app.db.models import Case, Decision, FollowUp, User
+from app.db.models import Case, Decision, FollowUp, Repertory, User
 
 # this is the Alembic Config object
 config = context.config
+
+# Override sqlalchemy.url from application settings (single source of truth)
+config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -26,7 +32,7 @@ target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
-    url = os.environ.get("DATABASE_URL", config.get_main_option("sqlalchemy.url"))
+    url = settings.DATABASE_URL
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -40,9 +46,8 @@ def run_migrations_offline() -> None:
 
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode."""
-    url = os.environ.get("DATABASE_URL", config.get_main_option("sqlalchemy.url"))
     configuration = config.get_section(config.config_ini_section)
-    configuration["sqlalchemy.url"] = url
+    configuration["sqlalchemy.url"] = settings.DATABASE_URL
     connectable = engine_from_config(
         configuration,
         prefix="sqlalchemy.",
@@ -52,7 +57,7 @@ def run_migrations_online() -> None:
     with connectable.connect() as connection:
         context.configure(
             connection=connection,
-            target_metadata=target_metadata
+            target_metadata=target_metadata,
         )
 
         with context.begin_transaction():

@@ -1,6 +1,7 @@
 @echo off
 REM Homeopathy Backend Environment Setup Script for Windows
-REM This script creates a Python virtual environment and installs dependencies
+REM This script creates a Python virtual environment, installs dependencies,
+REM and applies Alembic migrations to the PostgreSQL database.
 
 echo.
 echo =========================================
@@ -47,11 +48,11 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-echo [4/4] Initializing database...
+echo [4/4] Verifying connection and running migrations...
 python scripts\init_db.py
 if %errorlevel% neq 0 (
-    echo WARNING: Database initialization had issues, but setup continues
-    echo You may need to run: python scripts\init_db.py manually
+    echo WARNING: Database setup had issues. Please ensure PostgreSQL is running.
+    echo You may need to run: alembic upgrade head manually
 )
 
 echo.

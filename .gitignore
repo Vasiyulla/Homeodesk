@@ -51,9 +51,7 @@ frontend/.vite/
 
 # Database
 *.db
-*.sqlite
-*.sqlite3
-homeopathy.db
+
 
 # IDE
 .vscode/

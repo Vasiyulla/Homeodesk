@@ -76,7 +76,7 @@ frontend\run-frontend.bat    # Terminal 2
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│   SQLite (Development) / PostgreSQL (Production)            │
+│                       PostgreSQL Database                   │
 │   Users | Cases | Decisions | FollowUps | AuditTrail        │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -84,7 +84,7 @@ frontend\run-frontend.bat    # Terminal 2
 **Technology Stack:**
 - Frontend: React 18, Vite, Tailwind CSS, Zustand
 - Backend: FastAPI, SQLAlchemy, Alembic
-- Database: SQLite (development), PostgreSQL (production)
+- Database: PostgreSQL 15+
 - Testing: pytest (backend), Playwright (end-to-end)
 
 ---

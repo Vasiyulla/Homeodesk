@@ -5,12 +5,14 @@ from fastapi import APIRouter, Query, Depends
 from app.db.database import SessionLocal, get_db
 from app.db.models import Repertory
 from app.services.repertory_search import RepertorySearchService
+from app.services.repertorization import RepertorizationService, SelectedRubric, RemedyScore
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List, Optional, Dict
 from sqlalchemy import func
+from app.core.security import get_current_user
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(get_current_user)])
 
 
 class RemedyInfo(BaseModel):
@@ -263,3 +265,18 @@ def verify_data(db: Session = Depends(get_db)):
             for s in samples
         ]
     }
+
+
+class RepertorizeRequest(BaseModel):
+    rubrics: List[SelectedRubric]
+    weights: Optional[Dict[str, float]] = None
+
+@router.post("/repertorize", response_model=List[RemedyScore])
+def repertorize(
+    request: RepertorizeRequest,
+    db: Session = Depends(get_db)
+):
+    """Calculate remedy scores based on a list of selected rubrics."""
+    service = RepertorizationService(db)
+    results = service.repertorize(request.rubrics, request.weights)
+    return results

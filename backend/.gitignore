@@ -1,5 +1,32 @@
+# Python
 __pycache__/
-.venv/
 *.pyc
+*.pyo
+*.egg-info/
+
+# Virtual environment
+venv/
+.venv/
+
+# Database files
+*.db
+
+
+# Data files (loaded at runtime, not committed)
 data/
+
+# Environment
 .env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test / Coverage
+.pytest_cache/
+htmlcov/
+.coverage

@@ -8,6 +8,8 @@ from typing import Optional, List
 from fastapi import APIRouter, Depends, Query
 
 from app.db.database import get_db
+from app.db.models import User
+from app.core.security import get_current_user
 from app.services.symptom_search import SymptomSearchService
 from pydantic import BaseModel
 
@@ -34,7 +36,8 @@ class SymptomByCategoryRequest(BaseModel):
 @router.post("/symptom-search")
 def search_symptom(
     request: SymptomSearchRequest,
-    db=Depends(get_db)
+    db=Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Search for a symptom and get matching repertory rubrics.
@@ -86,7 +89,8 @@ def search_symptom_get(
     symptom: str = Query(..., description="Free-text symptom"),
     source: str = Query("both", description="Kent, Boger, or both"),
     limit: int = Query(10, description="Max rubrics to return"),
-    db=Depends(get_db)
+    db=Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     GET version of symptom search (for simple URL-based queries).
@@ -105,7 +109,8 @@ def search_symptom_get(
 @router.post("/symptom-search/by-category")
 def search_by_category(
     request: SymptomByCategoryRequest,
-    db=Depends(get_db)
+    db=Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Search symptoms organized by homeopathic categories.
@@ -153,7 +158,8 @@ def get_top_rubrics(
     symptom: str,
     count: int = Query(3, description="Number of top rubrics"),
     source: str = Query("both", description="Kent, Boger, or both"),
-    db=Depends(get_db)
+    db=Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Get only the top N rubrics for a symptom.

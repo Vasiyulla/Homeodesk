@@ -1,82 +1,84 @@
-from fastapi import APIRouter, Query
-from app.services.repertory_loader import get_loader
+from fastapi import APIRouter, Query, Depends
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict
 
-router = APIRouter()
+from app.core.security import get_current_user
+from app.services.repertory_loader import get_loader
 
+router = APIRouter(dependencies=[Depends(get_current_user)])
+
+class RemedyEntry(BaseModel):
+    name: str
+    grade: int
 
 class RubricEntry(BaseModel):
     id: str
     source: str
     section: str
     rubric: str
-    remedies: List[dict]
-    line: int
-
+    remedies: List[RemedyEntry]
 
 class SearchResponse(BaseModel):
     query: str
     count: int
-    results: List[RubricEntry]
-
+    results: List[dict]
 
 @router.get("/sections")
 def list_sections() -> dict:
-    """List all available sections across repertories."""
     loader = get_loader()
-    sections = set()
-    for entry in loader.get_all():
-        if entry.get('section'):
-            sections.add(entry['section'])
-    return {"sections": sorted(list(sections))}
+    return {"sections": loader.get_sections()}
 
-
-@router.get("/by-section/{section}")
-def get_by_section(section: str, source: Optional[str] = Query(None)) -> dict:
-    """Get all rubrics in a section (optionally filtered by source)."""
+@router.get("/chapter/{chapter}")
+def get_rubrics_for_chapter(chapter: str, source: Optional[str] = Query(None)) -> dict:
     loader = get_loader()
-    results = loader.search_by_section(section, source)
-    return {
-        "section": section,
-        "source": source or "all",
-        "count": len(results),
-        "results": results
-    }
+    results = loader.get_rubrics_by_chapter(chapter, source or "both")
+    return {"chapter": chapter, "count": len(results), "rubrics": results}
 
+@router.get("/rubric/exact")
+def get_exact_rubric(
+    chapter: str = Query(...), 
+    main_rubric: str = Query(...), 
+    sub_condition: Optional[str] = Query(""), 
+    source: Optional[str] = Query(None)
+) -> dict:
+    loader = get_loader()
+    results = loader.get_rubric_exact(chapter, main_rubric, sub_condition or "", source or "both")
+    return {"count": len(results), "results": results}
 
 @router.get("/search")
 def search_rubrics(q: str = Query(...), source: Optional[str] = Query(None)) -> SearchResponse:
-    """Search rubrics by text (case-insensitive substring match)."""
     loader = get_loader()
-    results = loader.search_by_rubric_text(q, source)
+    results = loader.search_symptoms(q, source or "both", limit=100)
+    
     return SearchResponse(
         query=q,
         count=len(results),
-        results=[RubricEntry(**r) for r in results[:100]]  # Limit to 100 results
+        results=results
     )
-
-
-@router.get("/entry/{entry_id}")
-def get_entry(entry_id: str) -> dict:
-    """Get a single entry by ID."""
-    loader = get_loader()
-    entry = loader.get_by_id(entry_id)
-    if not entry:
-        return {"error": f"Entry {entry_id} not found"}
-    return entry
-
 
 @router.get("/stats")
 def get_stats() -> dict:
-    """Get statistics about loaded repertories."""
     loader = get_loader()
     stats = {}
-    for source, entries in loader.data.items():
-        sections = set(e.get('section', 'Unknown') for e in entries)
-        stats[source] = {
-            "total_entries": len(entries),
-            "sections": len(sections),
-            "section_names": sorted(list(sections))
-        }
+    if loader.combined_df is not None:
+        df = loader.combined_df
+        sources = df['Source'].unique()
+        for src in sources:
+            src_df = df[df['Source'] == src]
+            stats[src] = {
+                "total_remedy_entries": int(src_df['Remedy_Count'].sum()),
+                "sections": int(src_df['Chapter'].nunique())
+            }
     return stats
+
+@router.get("/remedies")
+def list_remedies() -> dict:
+    loader = get_loader()
+    remedies = loader.get_all_remedies()
+    return {"count": len(remedies), "remedies": remedies}
+
+@router.get("/remedy/{remedy_name}")
+def get_remedy_rubrics(remedy_name: str, source: Optional[str] = Query(None)) -> dict:
+    loader = get_loader()
+    results = loader.get_rubrics_by_remedy(remedy_name, source or "both")
+    return {"remedy": remedy_name, "count": len(results), "rubrics": results}

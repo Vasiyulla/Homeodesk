@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Homeopathy Case Manager</string>
+    <string name="title_activity_main">Homeopathy Case Manager</string>
+    <string name="package_name">com.homeopathy.casemanager</string>
+    <string name="custom_url_scheme">com.homeopathy.casemanager</string>
+</resources>

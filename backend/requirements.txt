@@ -1,14 +1,40 @@
-fastapi
-uvicorn[standard]
-sqlalchemy
-alembic
-psycopg2-binary
-pydantic
-pydantic-settings
-python-dotenv
-aiofiles
-requests
-pytest
-sentence-transformers
-numpy
-python-multipart
+# ============================================
+# Homeopathy Backend - Production Dependencies
+# ============================================
+
+# --- Web Framework ---
+fastapi>=0.115.0,<1.0.0
+uvicorn[standard]>=0.30.0,<1.0.0
+
+# --- Database ---
+sqlalchemy>=2.0.0,<3.0.0
+alembic>=1.13.0,<2.0.0
+psycopg2-binary>=2.9.9,<3.0.0   # PostgreSQL adapter
+
+# --- Authentication & Security ---
+passlib[bcrypt]>=1.7.4,<2.0.0
+python-jose[cryptography]>=3.3.0,<4.0.0
+
+# --- Validation & Settings ---
+pydantic>=2.0.0,<3.0.0
+pydantic-settings>=2.0.0,<3.0.0
+python-dotenv>=1.0.0,<2.0.0
+
+# --- File Handling & Data ---
+aiofiles>=24.0.0
+python-multipart>=0.0.9
+pandas>=2.0.0
+
+# --- HTTP Client ---
+requests>=2.31.0,<3.0.0
+httpx>=0.27.0,<1.0.0             # Async HTTP client for health checks
+
+# --- Testing ---
+pytest>=8.0.0,<9.0.0
+pytest-asyncio>=0.23.0
+
+# --- Performance & Monitoring ---
+gunicorn>=22.0.0                 # Production WSGI/ASGI server (Linux)
+stripe==9.8.0
+
+slowapi==0.1.9
